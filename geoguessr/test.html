@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Add Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <style>
+      /* 
+       * Always set the map height explicitly to define the size of the div element
+       * that contains the map. 
+       */
+      #map {
+        height: 100%;
+      }
+
+      /* 
+       * Optional: Makes the sample page fill the window. 
+       */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+
+    <script>
+      let map;
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: new google.maps.LatLng(-26.32640110516264, 31.14416271910924),
+          zoom: 9,
+        });
+
+        const iconBase =
+          "https://www.geoguessr.com/_next";
+        const icons = {
+          location: {
+            icon: iconBase + "/image?url=%2F_next%2Fstatic%2Fmedia%2Fcorrect-location.56f20eda.png&w=32&q=75",
+          },
+          guess: {
+            icon: iconBase + "/static/media/favicon.bffdd9d3.png",
+          },
+        };
+        const features = [
+          {
+            position: new google.maps.LatLng(-26.32640110516264, 31.14416271910924),
+            type: "location",
+          },
+          {
+            position: new google.maps.LatLng(-26.32634249687502, 31.144153239856475),
+            type: "guess",
+          },
+        ];
+
+        // Create markers.
+        for (let i = 0; i < features.length; i++) {
+          const marker = new google.maps.Marker({
+            position: features[i].position,
+            icon: icons[features[i].type].icon,
+            map: map,
+            optimized: false,
+            zIndex: i + 999,
+          });
+        }
+      }
+
+      window.initMap = initMap;
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 
+      The `defer` attribute causes the callback to execute after the full HTML
+      document has been parsed. For non-blocking uses, avoiding race conditions,
+      and consistent behavior across browsers, consider loading using Promises.
+      See https://developers.google.com/maps/documentation/javascript/load-maps-js-api
+      for more information.
+      -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZb32T1BsSoDM9za3OjSeRTdG7BeG7Jb4&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>
